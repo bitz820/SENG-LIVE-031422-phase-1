@@ -22,9 +22,14 @@ Add the following capabilities to `renderPokemon()`:
 
 ✔️ Creates an "h3" element for each Pokemon and stores the element in a variable 'pokeLikes'
 
+const pokeLikes = document.createElement("h3")
+pokelikes.textContent = "Likes "
     - Use textContent() to fill in the heading with the text "Likes: "
 
 ✔️ Creates an "h5" element for each Pokemon and stores the element in a variable 'likesNum'
+function createHeader ()
+const h5 = document.creatElement("h5")
+h5.className = 
 
     - Assign likesNum a className of "likes-num"
     - Use textContent() to fill in the heading with the Pokemon character's number of likes

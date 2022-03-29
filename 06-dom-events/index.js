@@ -49,6 +49,43 @@ function renderPokemon(char) {
   const pokeName = document.createElement("h3");
   pokeName.textContent = char.name;
 
-  pokeCard.append(pokeImg, pokeName);
+  const pokeLikes = document.createElement("h3")
+  pokeLikes.textContent = "Likes: "
+
+  const likesNum = document.createElement('h5')
+  likesNum.className = "likes-num"
+  likesNum.textContent = char.likes
+  
+  const likesBttn = document.createElement('button')
+  likesBttn.className = "like-bttn"
+  likesBttn.textContent = "♥"
+  
+  const deleteBttn = document.createElement('button')
+  deleteBttn.className = "delete-bttn"
+  deleteBttn.textContent = "Delete"
+
+  pokeCard.append(pokeImg, pokeName, pokeLikes, likesNum, likesBttn, deleteBttn);
   pokeContainer.appendChild(pokeCard);
 }
+
+document.querySelector('#lecture-goals').remove()
+
+document.getElementById('header').innerHTML = `<img id="header-img" src="https://external-preview.redd.it/tQged7mKJ3cUpNMq5IMeceZvyKP3cTyHqhNmKEQ0Vv8.png?auto=webp&s=fb5fd61cae0bc9cde2bc2a006b1e2aeb0c935ce9" />`
+
+form = document.querySelector('form');
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = e.target.querySelector('#name-input').value
+  const img = e.target.querySelector('#img-input').value
+
+  // Create new character obj
+
+  const newChar =  {
+    name, //name: name
+    img, //img: img
+    id: 6, //NEEDS TO CHANGE
+    likes: 0
+  }
+  renderPokemon(newChar)
+form.reset()
+})

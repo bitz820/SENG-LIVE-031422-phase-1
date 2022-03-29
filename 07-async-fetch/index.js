@@ -1,60 +1,69 @@
-const pokemon = [
-  {
-    id: 1,
-    name: "bulbasaur",
-    img: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png",
-    likes: 4,
-  },
-  {
-    id: 2,
-    name: "ivysaur",
-    img: "https://images.cults3d.com/6VgkTLM1j-CTAMhEJTtsRV1z6N8=/516x516/https://files.cults3d.com/uploaders/14845535/illustration-file/5d09c257-51ed-4d65-aa36-3f9201af34c4/ivysaur.png",
-    likes: 21,
-  },
-  {
-    id: 3,
-    name: "venusaur",
-    img: "https://images.saymedia-content.com/.image/t_share/MTc2MjYwODQ5NTk2NTcyODYy/pokemon-venusaur-nicknames.png",
-    likes: 7,
-  },
-  {
-    id: 4,
-    name: "charmander",
-    img: "https://pixy.org/download/1207107/",
-    likes: 20,
-  },
-  {
-    id: 5,
-    name: "charmeleon",
-    img: "https://static.pokemonpets.com/images/monsters-images-800-800/5-Charmeleon.webp",
-    likes: 11,
-  },
-];
 
 const pokeContainer = document.querySelector("#poke-container");
 const pokeForm = document.querySelector("#poke-form");
 
-pokeForm.addEventListener("submit", function (e) {
+const getPokemon = () => {
+fetch('http://localhost:3000/characters')
+.then(resp => resp.json())
+.then(characters => {
+  characters.forEach(character => renderPokemon(character))
+})
+}
+
+getPokemon()
+
+const showCharacter = (character) =>  {
+  fetch(`http://localhost:3000/characters/${character.id}`)
+  .then(resp => resp.json())
+  .then(character => {
+    const pokeCard = renderPokemon(character)
+    pokeCard.id = "poke-show-card"
+    pokeContainer.replaceChildren(pokeCard)
+  })
+}
+
+
+// event handler for the poke-form submission:
+const createPokemon = (e) => {
+  // e is the event object, event objects are actually created when an event occurs
   e.preventDefault();
   const name = document.querySelector("#name-input").value;
   const img = document.querySelector("#img-input").value;
 
   let newChar = {
     id: 6, // NEEDS TO CHANGE,
-    name: name,
-    img: img,
+    name,
+    img,
     likes: 0,
   };
 
   renderPokemon(newChar);
   pokeForm.reset();
-});
+};
 
-pokemon.forEach(function (character) {
-  renderPokemon(character);
-});
+// we are only passing in a reference to the function as a callback
+// What does adding () do to callback function
+// event object will be passed implicitly to createPokemon
+// under the hood this is what is happening:
+// pokeForm.addEventListener("submit", (e) => createPokemon(e));
 
-function renderPokemon(char) {
+pokeForm.addEventListener("submit", createPokemon);
+
+
+
+// this fires off when the like button is clicked
+const increaseLikes = (char, likeNum) => {
+      // inside here I need to increment the characters number of likes
+      ++char.likes
+
+      // how will I update the DOM to reflect the new number:
+      likeNum.textContent = char.likes
+}
+
+
+
+const renderPokemon = (char) => {
+
   const pokeCard = document.createElement("div");
   pokeCard.id = `poke-${char.id}`;
   pokeCard.className = "poke-card";
@@ -79,10 +88,23 @@ function renderPokemon(char) {
   likesBttn.className = "like-bttn";
   likesBttn.textContent = "♥";
 
+  // we are attaching the event listener here because we have access to the element directly upon creation
+  // cleaned up version, more modern syntax:
+  likesBttn.addEventListener('click', () => increaseLikes(char, likeNum))
+
   const deleteBttn = document.createElement("button");
   deleteBttn.className = "delete-bttn";
   deleteBttn.textContent = "delete";
 
+  // could use refactoring:
+  deleteBttn.addEventListener('click', () => {
+    pokeCard.remove()
+    // inside here, im going to remove the character card from the DOM
+
+  })
+  
   pokeCard.append(pokeImg, pokeName, pokeLikes, likeNum, likesBttn, deleteBttn);
   pokeContainer.appendChild(pokeCard);
+  
+  return pokeCard
 }

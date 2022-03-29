@@ -23,12 +23,23 @@
 Define the following functions using arrow function syntax:
 
 1. Write a function 'add' with 2 parameters, num1 and num2. Return the sum of the two parameters. 
+function add (num1, num2){
+  return num1+num2
+}
+
+const add = (num1, num2) => num1+num2
 
 2. Write a function 'multiply' with 2 parameters, num1 and num2. Return the two parameters multiplied together. 
 
+const multiply = (num1, num2) => num1*num2
+
 3. Write a function 'sub' with 2 parameters, num1 and num2. Return the two parameters subtracted from one another.
 
+cosnt sub = (num1, num2) => num1-num2
+
 4. Write a function 'compute' that will receive a callback function. Invoke the callback function within 'compute' with two arguments provided: 6 and 3.
+
+const compute = (callbackFunction) => callbackFunction(6, 3)
 
 5. Invoke compute 3 times, each time passing it each of the 3 functions defined for steps 1-3 (add, multiply, and sub): 
 
